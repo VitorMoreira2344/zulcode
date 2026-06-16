@@ -110,7 +110,7 @@
             width: 100%;
             text-align: center;
             padding: 60px;
-            margin-top: 60px;
+            margin-top: 60px; /* Textos mais para baixo */
         }
         .slide.cover-video .cover-badge {
             display: inline-block;
@@ -188,7 +188,7 @@
         }
         .slide.cover-video .institution strong { color: var(--zul-blue); }
 
-        /* === SLIDE DE VÍDEO FINAL (ENCERRAMENTO) === */
+        /* === ÚLTIMO SLIDE (ENCERRAMENTO) COM VÍDEO === */
         .slide.video-end {
             padding: 0;
             background: #000;
@@ -217,12 +217,6 @@
             z-index: 2;
             pointer-events: none;
         }
-        .slide.video-end .video-overlay .icon-final {
-            font-size: 4rem;
-            color: var(--zul-blue);
-            margin-bottom: 20px;
-            display: block;
-        }
         .slide.video-end .video-overlay h2 {
             font-size: 4rem;
             font-weight: 900;
@@ -230,7 +224,7 @@
             text-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
         .slide.video-end .video-overlay h2 span { color: var(--zul-blue); }
-        .slide.video-end .video-overlay p {
+        .slide.video-end .video-overlay .subtitle-end {
             font-size: 1.3rem;
             color: var(--color-gray);
             font-weight: 600;
@@ -248,22 +242,12 @@
         }
         .slide.video-end .video-overlay .participants i { color: var(--zul-blue); margin-right: 10px; }
         .slide.video-end .video-overlay .participants strong { color: var(--zul-blue); }
-        .slide.video-end .video-overlay .tags {
-            margin-top: 20px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
+        .slide.video-end .video-overlay .footer-end {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
         }
-        .slide.video-end .video-overlay .tags span {
-            background: rgba(43,107,243,0.15);
-            padding: 4px 16px;
-            border-radius: 20px;
-            border: 1px solid rgba(43,107,243,0.15);
-            font-size: 0.85rem;
-            color: var(--color-gray);
-        }
-        .slide.video-end .video-overlay .tags span i { color: var(--zul-blue); margin-right: 6px; }
+        .slide.video-end .video-overlay .footer-end i { color: var(--zul-blue); }
 
         /* === SLIDE DE SEÇÃO === */
         .slide.section {
@@ -400,10 +384,53 @@
         .card-platform ul li:last-child { border-bottom: none; }
         .card-platform ul li i { color: var(--zul-blue); margin-right: 8px; width: 18px; }
 
-        /* === SEM SETAS === */
+        /* === NAVEGAÇÃO INFERIOR === */
         .controls {
-            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 40px;
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 10px 18px;
+            border-radius: 50px;
+            border: 1px solid rgba(43,107,243,0.1);
         }
+        .btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: var(--zul-blue);
+            border-color: var(--zul-blue);
+            transform: scale(1.05);
+        }
+        .btn i { font-size: 0.9rem; }
+
+        .btn-progress {
+            background: transparent;
+            border: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            color: rgba(255,255,255,0.5);
+            cursor: default;
+            width: auto;
+            padding: 0 10px;
+        }
+        .btn-progress strong { color: var(--zul-blue); }
 
         .progress-bar {
             position: fixed;
@@ -442,12 +469,14 @@
         /* === RESPONSIVO === */
         @media (max-width: 768px) {
             .slide { padding: 60px 25px 40px; }
+            .slide.cover-video .cover-content { margin-top: 40px; padding: 30px; }
             .slide.cover-video h1 { font-size: 3.5rem; }
             .slide.cover-video .subtitle { font-size: 1.1rem; }
             .slide.cover-video .cover-badge { font-size: 0.65rem; padding: 4px 14px; }
-            .slide.cover-video .cover-content { padding: 30px; margin-top: 40px; }
             .slide.video-end .video-overlay h2 { font-size: 2.5rem; }
             .slide.video-end .video-overlay .participants { font-size: 0.85rem; padding: 8px 16px; }
+            .slide.video-end .video-overlay .subtitle-end { font-size: 1rem; }
+            .slide.video-end .video-overlay .footer-end { font-size: 0.75rem; }
             .slide.section h1 { font-size: 2.2rem; }
             .slide.section { margin: 15px; padding: 40px 20px; }
             .slide.content { padding: 60px 25px 40px; }
@@ -457,10 +486,12 @@
             .slide-number { top: 20px; right: 25px; }
             .slide-number .current { font-size: 2.2rem; }
             .slide-number .total { font-size: 1.6rem; }
+            .controls { bottom: 15px; right: 15px; padding: 6px 12px; }
+            .btn { width: 36px; height: 36px; font-size: 0.8rem; }
+            .btn-progress { font-size: 0.7rem; padding: 0 6px; }
             .dots { bottom: 20px; gap: 8px; }
             .slide.cover-video .authors .author { font-size: 0.8rem; padding: 2px 10px; }
             .slide.cover-video .institution { font-size: 0.75rem; padding: 4px 12px; }
-            .slide.video-end .video-overlay .tags span { font-size: 0.75rem; padding: 2px 12px; }
         }
 
         @media print {
@@ -481,9 +512,16 @@
 <div class="progress-bar" id="progressBar"></div>
 <div class="dots" id="dotsContainer"></div>
 
+<!-- NAVEGAÇÃO INFERIOR -->
+<div class="controls">
+    <button class="btn" onclick="prevSlide()" title="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+    <span class="btn btn-progress" id="slideCounter"><strong id="currentNum">01</strong> / <span id="totalNum">16</span></span>
+    <button class="btn" onclick="nextSlide()" title="Próximo"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
+
 <div class="container" id="slidesContainer">
 
-    <!-- === SLIDE 1: CAPA COM VÍDEO === -->
+    <!-- === SLIDE 1: CAPA COM VÍDEO (TEXTOS MAIS PARA BAIXO) === -->
     <div class="slide cover-video active">
         <div class="slide-number">
             <span class="current">01</span>
@@ -863,7 +901,7 @@
         </div>
     </div>
 
-    <!-- === SLIDE 16: VÍDEO FINAL (ENCERRAMENTO) === -->
+    <!-- === SLIDE 16: VÍDEO FINAL + ENCERRAMENTO (UNIFICADO) === -->
     <div class="slide video-end">
         <div class="video-container">
             <video id="endVideo" autoplay muted loop playsinline>
@@ -871,17 +909,14 @@
                 Seu navegador não suporta vídeo.
             </video>
             <div class="video-overlay">
-                <i class="fa-solid fa-flag-checkered icon-final"></i>
                 <h2>Zul<span>Code</span></h2>
-                <p>Plataforma Gamificada para o Ensino de Programação</p>
+                <div class="subtitle-end">Plataforma Gamificada para o Ensino de Programação</div>
                 <div class="participants">
                     <i class="fa-solid fa-users"></i> 
                     Thales G. · Gabriel Z. · Vitor M. · Miguel R. · Orientadora: Profª Priscila
                 </div>
-                <div class="tags">
-                    <span><i class="fa-solid fa-graduation-cap"></i> TCC 2026</span>
-                    <span><i class="fa-solid fa-university"></i> COTIL/UNICAMP</span>
-                    <span><i class="fa-solid fa-code"></i> ZulCode</span>
+                <div class="footer-end">
+                    <i class="fa-solid fa-graduation-cap"></i> COTIL/UNICAMP · 2026
                 </div>
             </div>
         </div>
@@ -900,13 +935,11 @@
     const totalSlides = slides.length;
     const progressBar = document.getElementById('progressBar');
     const dotsContainer = document.getElementById('dotsContainer');
-    const currentNum = document.querySelectorAll('.current');
-    const totalNum = document.querySelectorAll('.total');
+    const currentNum = document.getElementById('currentNum');
+    const totalNum = document.getElementById('totalNum');
 
-    // Atualizar totais
-    totalNum.forEach(el => el.textContent = String(totalSlides).padStart(2, '0'));
+    totalNum.textContent = String(totalSlides).padStart(2, '0');
 
-    // Criar dots
     for (let i = 0; i < totalSlides; i++) {
         const dot = document.createElement('div');
         dot.classList.add('dot');
@@ -916,7 +949,6 @@
     }
     const dots = document.querySelectorAll('.dot');
 
-    // Vídeos
     const coverVideo = document.getElementById('coverVideo');
     const videoWeb = document.getElementById('videoWeb');
     const videoDesktop = document.getElementById('videoDesktop');
@@ -937,9 +969,8 @@
         });
         const progress = ((currentSlide + 1) / totalSlides) * 100;
         progressBar.style.width = `${progress}%`;
-        currentNum.forEach(el => el.textContent = String(currentSlide + 1).padStart(2, '0'));
+        currentNum.textContent = String(currentSlide + 1).padStart(2, '0');
 
-        // Controlar vídeos
         if (coverVideo) {
             if (currentSlide === 0) coverVideo.play().catch(() => {});
             else coverVideo.pause();
@@ -962,15 +993,12 @@
         }
     }
 
-    // Navegação por teclado
+    function nextSlide() { showSlide(currentSlide + 1); }
+    function prevSlide() { showSlide(currentSlide - 1); }
+
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === ' ') {
-            e.preventDefault();
-            showSlide(currentSlide + 1);
-        } else if (e.key === 'ArrowLeft') {
-            e.preventDefault();
-            showSlide(currentSlide - 1);
-        }
+        if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+        else if (e.key === 'ArrowLeft') prevSlide();
     });
 
     showSlide(0);
