@@ -23,15 +23,6 @@
             --color-gray: #8892b0;
         }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background: #000;
-        }
-
         body {
             font-family: 'Nunito', sans-serif;
             background-color: var(--color-bg);
@@ -45,8 +36,7 @@
         .slide {
             position: absolute;
             top: 0; left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%; height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -56,7 +46,7 @@
             pointer-events: none;
             transition: opacity 0.6s ease;
             z-index: 0;
-            overflow: hidden;
+            overflow-y: auto;
         }
         .slide.active { opacity: 1; pointer-events: auto; z-index: 1; }
 
@@ -107,8 +97,8 @@
             align-items: center;
         }
         .slide.cover-video .video-bg video {
-            min-width: 100vw;
-            min-height: 100vh;
+            min-width: 100%;
+            min-height: 100%;
             width: auto;
             height: auto;
             position: absolute;
@@ -209,27 +199,25 @@
         }
         .slide.cover-video .institution strong { color: var(--zul-blue); }
 
-        /* === VÍDEO DAS PLATAFORMAS (TELA CHEIA) === */
+        /* === VÍDEO DAS PLATAFORMAS (CENTRALIZADO) === */
         .slide.video-slide {
             padding: 0;
             background: #000;
-            width: 100vw;
-            height: 100vh;
         }
         .slide.video-slide .video-container {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
         .slide.video-slide .video-container video {
-            min-width: 100vw;
-            min-height: 100vh;
+            min-width: 100%;
+            min-height: 100%;
             width: auto;
             height: auto;
             position: absolute;
@@ -240,8 +228,7 @@
         .slide.video-slide .video-overlay {
             position: absolute;
             top: 0; left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             background: rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
@@ -266,23 +253,21 @@
         .slide.video-end {
             padding: 0;
             background: #000;
-            width: 100vw;
-            height: 100vh;
         }
         .slide.video-end .video-container {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
         .slide.video-end .video-container video {
-            min-width: 100vw;
-            min-height: 100vh;
+            min-width: 100%;
+            min-height: 100%;
             width: auto;
             height: auto;
             position: absolute;
@@ -294,8 +279,7 @@
         .slide.video-end .video-overlay {
             position: absolute;
             top: 0; left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             background: rgba(0,0,0,0.4);
             display: flex;
             flex-direction: column;
@@ -513,38 +497,6 @@
             background: var(--zul-blue);
         }
 
-        /* === FULLSCREEN (F11) - GARANTE TELA CHEIA === */
-        .slide:fullscreen,
-        .slide:-webkit-full-screen,
-        .slide:-moz-full-screen,
-        .slide:-ms-fullscreen {
-            width: 100vw !important;
-            height: 100vh !important;
-            padding: 0 !important;
-        }
-
-        .slide:fullscreen .video-container,
-        .slide:-webkit-full-screen .video-container,
-        .slide:-moz-full-screen .video-container,
-        .slide:-ms-fullscreen .video-container {
-            width: 100vw !important;
-            height: 100vh !important;
-        }
-
-        .slide:fullscreen video,
-        .slide:-webkit-full-screen video,
-        .slide:-moz-full-screen video,
-        .slide:-ms-fullscreen video {
-            min-width: 100vw !important;
-            min-height: 100vh !important;
-            width: auto !important;
-            height: auto !important;
-            position: absolute !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-        }
-
         /* === RESPONSIVO === */
         @media (max-width: 768px) {
             .slide { padding: 60px 25px 40px; }
@@ -596,13 +548,12 @@
     <button class="btn" onclick="prevSlide()" title="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
     <span class="btn btn-progress" id="slideCounter"><strong id="currentNum">01</strong> / <span id="totalNum">16</span></span>
     <button class="btn" onclick="nextSlide()" title="Próximo"><i class="fa-solid fa-chevron-right"></i></button>
-    <button class="btn" onclick="toggleFullscreen()" title="Tela Cheia (F11)"><i class="fa-solid fa-expand"></i></button>
 </div>
 
 <div class="container" id="slidesContainer">
 
     <!-- === SLIDE 1: CAPA COM VÍDEO === -->
-    <div class="slide cover-video active" id="slide1">
+    <div class="slide cover-video active">
         <div class="slide-number">
             <span class="current">01</span>
             <span class="separator">/</span>
@@ -982,6 +933,7 @@
     </div>
 
     <!-- === SLIDE 16: VÍDEO FINAL + ENCERRAMENTO === -->
+      <!-- === SLIDE 16: VÍDEO FINAL + ENCERRAMENTO === -->
     <div class="slide video-end">
         <div class="video-container">
             <video id="endVideo" autoplay muted loop playsinline>
@@ -989,13 +941,27 @@
                 Seu navegador não suporta vídeo.
             </video>
             <div class="video-overlay">
-                <h2>Zul<span>Code</span></h2>
-                <div class="subtitle-end">Plataforma Gamificada para o Ensino de Programação</div>
-                <div class="participants">
-                    <i class="fa-solid fa-users"></i> 
-                    Thales G. · Gabriel Z. · Vitor M. · Miguel R. · Orientadora: Profª Priscila
+                <i class="fa-solid fa-flag-checkered" style="font-size: 4rem; color: var(--zul-blue); margin-bottom: 20px;"></i>
+                <h2 style="font-size: 3.5rem; font-weight: 900; color: white; text-shadow: 0 0 30px rgba(0,0,0,0.5);">Obrigado!</h2>
+                <div style="margin-top: 25px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                    <span style="background: rgba(43,107,243,0.15); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(43,107,243,0.2);">
+                        <i class="fa-solid fa-code" style="color: var(--zul-blue);"></i> ZulCode
+                    </span>
+                    <span style="background: rgba(43,107,243,0.15); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(43,107,243,0.2);">
+                        <i class="fa-solid fa-graduation-cap" style="color: var(--zul-blue);"></i> COTIL/UNICAMP
+                    </span>
+                    <span style="background: rgba(43,107,243,0.15); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(43,107,243,0.2);">
+                        <i class="fa-solid fa-calendar" style="color: var(--zul-blue);"></i> 2026
+                    </span>
                 </div>
-                <div class="footer-end">
+                <div style="margin-top: 30px; font-size: 1.1rem; color: rgba(255,255,255,0.6);">
+                    <i class="fa-solid fa-users" style="color: var(--zul-blue);"></i> 
+                    Thales G. · Gabriel Z. · Vitor M. · Miguel R.
+                </div>
+                <div style="margin-top: 8px; font-size: 0.95rem; color: rgba(255,255,255,0.4);">
+                    Orientadora: <strong style="color: var(--zul-blue);">Profª Priscila</strong>
+                </div>
+                <div class="footer-end" style="margin-top: 30px; font-size: 0.85rem; color: rgba(255,255,255,0.3);">
                     <i class="fa-solid fa-graduation-cap"></i> COTIL/UNICAMP · 2026
                 </div>
             </div>
@@ -1006,9 +972,7 @@
             <span class="total">16</span>
         </div>
     </div>
-
-</div>
-
+    
 <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
@@ -1073,39 +1037,12 @@
         }
     }
 
-    function toggleFullscreen() {
-        const el = document.documentElement;
-        if (!document.fullscreenElement) {
-            el.requestFullscreen().catch(err => {
-                console.log('Erro ao entrar em tela cheia:', err);
-            });
-        } else {
-            document.exitFullscreen();
-        }
-    }
-
     function nextSlide() { showSlide(currentSlide + 1); }
     function prevSlide() { showSlide(currentSlide - 1); }
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
         else if (e.key === 'ArrowLeft') prevSlide();
-        else if (e.key === 'f' || e.key === 'F11') {
-            e.preventDefault();
-            toggleFullscreen();
-        }
-    });
-
-    // Atualiza o contador quando sair/entrar em tela cheia
-    document.addEventListener('fullscreenchange', () => {
-        // Força re-renderização dos vídeos
-        slides.forEach(slide => {
-            if (slide.classList.contains('active')) {
-                // Pequeno hack para forçar reflow
-                slide.style.display = 'none';
-                setTimeout(() => { slide.style.display = 'flex'; }, 10);
-            }
-        });
     });
 
     showSlide(0);
