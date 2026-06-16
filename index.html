@@ -262,6 +262,35 @@
             font-weight: 600;
         }
 
+        /* === VÍDEO SEM OVERLAY (APENAS VÍDEO) === */
+        .slide.video-full {
+            padding: 0;
+            background: #000;
+            width: 100vw;
+            height: 100vh;
+        }
+        .slide.video-full .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide.video-full .video-container video {
+            min-width: 100vw;
+            min-height: 100vh;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
         /* === ÚLTIMO SLIDE (ENCERRAMENTO) COM VÍDEO === */
         .slide.video-end {
             padding: 0;
@@ -576,7 +605,7 @@
         @media print {
             .controls, .progress-bar, .dots, .slide-number { display: none; }
             .slide { position: relative; opacity: 1; page-break-after: always; height: auto; min-height: 100vh; background: white !important; color: black !important; }
-            .slide.video-slide, .slide.video-end, .slide.cover-video { display: none; }
+            .slide.video-slide, .slide.video-end, .slide.cover-video, .slide.video-full { display: none; }
             .card-platform { border: 1px solid #ccc; background: white; }
             .card-platform h4, .card-platform p { color: black !important; }
             .slide.section { border: 2px solid #ccc; background: white !important; }
@@ -594,7 +623,7 @@
 <!-- NAVEGAÇÃO INFERIOR -->
 <div class="controls">
     <button class="btn" onclick="prevSlide()" title="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
-    <span class="btn btn-progress" id="slideCounter"><strong id="currentNum">01</strong> / <span id="totalNum">16</span></span>
+    <span class="btn btn-progress" id="slideCounter"><strong id="currentNum">01</strong> / <span id="totalNum">19</span></span>
     <button class="btn" onclick="nextSlide()" title="Próximo"><i class="fa-solid fa-chevron-right"></i></button>
     <button class="btn" onclick="toggleFullscreen()" title="Tela Cheia (F11)"><i class="fa-solid fa-expand"></i></button>
 </div>
@@ -606,7 +635,7 @@
         <div class="slide-number">
             <span class="current">01</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
         <div class="video-bg">
             <video id="coverVideo" autoplay muted loop playsinline>
@@ -640,7 +669,7 @@
         <div class="slide-number">
             <span class="current">02</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
         <h2><i class="fa-solid fa-lightbulb"></i> O que é o ZulCode?</h2>
         <p>
@@ -666,7 +695,7 @@
         <div class="slide-number">
             <span class="current">03</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
         <h2><i class="fa-solid fa-circle-exclamation"></i> O Problema</h2>
         <p>
@@ -687,7 +716,7 @@
         <div class="slide-number">
             <span class="current">04</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
         <h2><i class="fa-solid fa-gamepad"></i> Mecânicas de Gamificação</h2>
         <div class="grid-3">
@@ -729,7 +758,7 @@
         <div class="slide-number">
             <span class="current">05</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
         <h2><i class="fa-solid fa-crown"></i> Planos de Assinatura</h2>
         <div class="grid-2">
@@ -765,7 +794,7 @@
         <div class="slide-number">
             <span class="current">06</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
         <h2><i class="fa-solid fa-cubes"></i> Stack Tecnológica</h2>
         <p>O ZulCode foi desenvolvido com uma arquitetura moderna e multiplataforma:</p>
@@ -802,7 +831,7 @@
         <div class="slide-number">
             <span class="current">07</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
         <i class="fa-solid fa-globe icon"></i>
         <h1>Versão Web</h1>
@@ -812,7 +841,7 @@
         </div>
     </div>
 
-    <!-- === SLIDE 8: VÍDEO WEB === -->
+    <!-- === SLIDE 8: VÍDEO WEB (COM OVERLAY) === -->
     <div class="slide video-slide">
         <div class="video-container">
             <video id="videoWeb" autoplay muted loop playsinline>
@@ -827,16 +856,31 @@
         <div class="slide-number">
             <span class="current">08</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
     </div>
 
-    <!-- === SLIDE 9: COMENTÁRIO WEB === -->
-    <div class="slide content">
+    <!-- === SLIDE 9: VÍDEO WEB (SEM OVERLAY - APENAS VÍDEO) === -->
+    <div class="slide video-full">
+        <div class="video-container">
+            <video id="videoWebFull" autoplay muted loop playsinline>
+                <source src="video-web.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </div>
         <div class="slide-number">
             <span class="current">09</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
+        </div>
+    </div>
+
+    <!-- === SLIDE 10: COMENTÁRIO WEB === -->
+    <div class="slide content">
+        <div class="slide-number">
+            <span class="current">10</span>
+            <span class="separator">/</span>
+            <span class="total">19</span>
         </div>
         <h2><i class="fa-solid fa-comment"></i> Comentário — Versão Web</h2>
         <p>
@@ -857,12 +901,12 @@
         </ul>
     </div>
 
-    <!-- === SLIDE 10: SEÇÃO DESKTOP === -->
+    <!-- === SLIDE 11: SEÇÃO DESKTOP === -->
     <div class="slide section">
         <div class="slide-number">
-            <span class="current">10</span>
+            <span class="current">11</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
         <i class="fa-solid fa-desktop icon"></i>
         <h1>Versão Desktop</h1>
@@ -872,7 +916,7 @@
         </div>
     </div>
 
-    <!-- === SLIDE 11: VÍDEO DESKTOP === -->
+    <!-- === SLIDE 12: VÍDEO DESKTOP (COM OVERLAY) === -->
     <div class="slide video-slide">
         <div class="video-container">
             <video id="videoDesktop" autoplay muted loop playsinline>
@@ -885,18 +929,33 @@
             </div>
         </div>
         <div class="slide-number">
-            <span class="current">11</span>
+            <span class="current">12</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
     </div>
 
-    <!-- === SLIDE 12: COMENTÁRIO DESKTOP === -->
+    <!-- === SLIDE 13: VÍDEO DESKTOP (SEM OVERLAY - APENAS VÍDEO) === -->
+    <div class="slide video-full">
+        <div class="video-container">
+            <video id="videoDesktopFull" autoplay muted loop playsinline>
+                <source src="video-desktop.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </div>
+        <div class="slide-number">
+            <span class="current">13</span>
+            <span class="separator">/</span>
+            <span class="total">19</span>
+        </div>
+    </div>
+
+    <!-- === SLIDE 14: COMENTÁRIO DESKTOP === -->
     <div class="slide content">
         <div class="slide-number">
-            <span class="current">12</span>
+            <span class="current">14</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
         <h2><i class="fa-solid fa-comment"></i> Comentário — Versão Desktop</h2>
         <p>
@@ -917,12 +976,12 @@
         </ul>
     </div>
 
-    <!-- === SLIDE 13: SEÇÃO MOBILE === -->
+    <!-- === SLIDE 15: SEÇÃO MOBILE === -->
     <div class="slide section">
         <div class="slide-number">
-            <span class="current">13</span>
+            <span class="current">15</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
         <i class="fa-solid fa-mobile-screen-button icon"></i>
         <h1>Versão Mobile</h1>
@@ -932,7 +991,7 @@
         </div>
     </div>
 
-    <!-- === SLIDE 14: VÍDEO MOBILE === -->
+    <!-- === SLIDE 16: VÍDEO MOBILE (COM OVERLAY) === -->
     <div class="slide video-slide">
         <div class="video-container">
             <video id="videoMobile" autoplay muted loop playsinline>
@@ -945,18 +1004,33 @@
             </div>
         </div>
         <div class="slide-number">
-            <span class="current">14</span>
+            <span class="current">16</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
     </div>
 
-    <!-- === SLIDE 15: COMENTÁRIO MOBILE === -->
+    <!-- === SLIDE 17: VÍDEO MOBILE (SEM OVERLAY - APENAS VÍDEO) === -->
+    <div class="slide video-full">
+        <div class="video-container">
+            <video id="videoMobileFull" autoplay muted loop playsinline>
+                <source src="video-mobile.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </div>
+        <div class="slide-number">
+            <span class="current">17</span>
+            <span class="separator">/</span>
+            <span class="total">19</span>
+        </div>
+    </div>
+
+    <!-- === SLIDE 18: COMENTÁRIO MOBILE === -->
     <div class="slide content">
         <div class="slide-number">
-            <span class="current">15</span>
+            <span class="current">18</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
         <h2><i class="fa-solid fa-comment"></i> Comentário — Versão Mobile</h2>
         <p>
@@ -981,8 +1055,7 @@
         </div>
     </div>
 
-    <!-- === SLIDE 16: VÍDEO FINAL + ENCERRAMENTO === -->
-       <!-- === SLIDE 16: VÍDEO FINAL + ENCERRAMENTO === -->
+    <!-- === SLIDE 19: VÍDEO FINAL + ENCERRAMENTO === -->
     <div class="slide video-end">
         <div class="video-container">
             <video id="endVideo" autoplay muted loop playsinline>
@@ -1016,9 +1089,9 @@
             </div>
         </div>
         <div class="slide-number">
-            <span class="current">16</span>
+            <span class="current">19</span>
             <span class="separator">/</span>
-            <span class="total">16</span>
+            <span class="total">19</span>
         </div>
     </div>
 
@@ -1046,8 +1119,11 @@
 
     const coverVideo = document.getElementById('coverVideo');
     const videoWeb = document.getElementById('videoWeb');
+    const videoWebFull = document.getElementById('videoWebFull');
     const videoDesktop = document.getElementById('videoDesktop');
+    const videoDesktopFull = document.getElementById('videoDesktopFull');
     const videoMobile = document.getElementById('videoMobile');
+    const videoMobileFull = document.getElementById('videoMobileFull');
     const endVideo = document.getElementById('endVideo');
 
     function showSlide(index) {
@@ -1074,16 +1150,28 @@
             if (currentSlide === 7) videoWeb.play().catch(() => {});
             else videoWeb.pause();
         }
+        if (videoWebFull) {
+            if (currentSlide === 8) videoWebFull.play().catch(() => {});
+            else videoWebFull.pause();
+        }
         if (videoDesktop) {
-            if (currentSlide === 10) videoDesktop.play().catch(() => {});
+            if (currentSlide === 11) videoDesktop.play().catch(() => {});
             else videoDesktop.pause();
         }
+        if (videoDesktopFull) {
+            if (currentSlide === 12) videoDesktopFull.play().catch(() => {});
+            else videoDesktopFull.pause();
+        }
         if (videoMobile) {
-            if (currentSlide === 13) videoMobile.play().catch(() => {});
+            if (currentSlide === 15) videoMobile.play().catch(() => {});
             else videoMobile.pause();
         }
+        if (videoMobileFull) {
+            if (currentSlide === 16) videoMobileFull.play().catch(() => {});
+            else videoMobileFull.pause();
+        }
         if (endVideo) {
-            if (currentSlide === 15) endVideo.play().catch(() => {});
+            if (currentSlide === 18) endVideo.play().catch(() => {});
             else endVideo.pause();
         }
     }
@@ -1111,12 +1199,9 @@
         }
     });
 
-    // Atualiza o contador quando sair/entrar em tela cheia
     document.addEventListener('fullscreenchange', () => {
-        // Força re-renderização dos vídeos
         slides.forEach(slide => {
             if (slide.classList.contains('active')) {
-                // Pequeno hack para forçar reflow
                 slide.style.display = 'none';
                 setTimeout(() => { slide.style.display = 'flex'; }, 10);
             }
