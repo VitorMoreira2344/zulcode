@@ -291,6 +291,64 @@
             transform: translate(-50%, -50%);
         }
 
+        /* === VÍDEO MOBILE (MODO RETRATO) === */
+        .slide.video-mobile {
+            padding: 0;
+            background: #000;
+            width: 100vw;
+            height: 100vh;
+        }
+        .slide.video-mobile .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+        .slide.video-mobile .video-container video {
+            height: 90vh;
+            width: auto;
+            max-width: 90vw;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 0 60px rgba(43,107,243,0.15);
+            border: 2px solid rgba(43,107,243,0.2);
+        }
+        /* Fundo do slide com gradiente suave para destacar o celular */
+        .slide.video-mobile .mobile-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(43,107,243,0.05) 0%, #000000 70%);
+            z-index: 0;
+        }
+        .slide.video-mobile .video-overlay-mobile {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            text-align: center;
+            pointer-events: none;
+        }
+        .slide.video-mobile .video-overlay-mobile h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        .slide.video-mobile .video-overlay-mobile p {
+            font-size: 1rem;
+            color: var(--color-gray);
+            font-weight: 600;
+        }
+
         /* === ÚLTIMO SLIDE (ENCERRAMENTO) COM VÍDEO === */
         .slide.video-end {
             padding: 0;
@@ -591,6 +649,9 @@
             .slide.content h2 { font-size: 1.8rem; }
             .grid-2, .grid-3 { grid-template-columns: 1fr; }
             .slide.video-slide .video-overlay h2 { font-size: 2rem; }
+            .slide.video-mobile .video-container video { height: 80vh; max-width: 95vw; }
+            .slide.video-mobile .video-overlay-mobile h2 { font-size: 1.2rem; }
+            .slide.video-mobile .video-overlay-mobile p { font-size: 0.8rem; }
             .slide-number { top: 20px; right: 25px; }
             .slide-number .current { font-size: 2.2rem; }
             .slide-number .total { font-size: 1.6rem; }
@@ -605,7 +666,7 @@
         @media print {
             .controls, .progress-bar, .dots, .slide-number { display: none; }
             .slide { position: relative; opacity: 1; page-break-after: always; height: auto; min-height: 100vh; background: white !important; color: black !important; }
-            .slide.video-slide, .slide.video-end, .slide.cover-video, .slide.video-full { display: none; }
+            .slide.video-slide, .slide.video-end, .slide.cover-video, .slide.video-full, .slide.video-mobile { display: none; }
             .card-platform { border: 1px solid #ccc; background: white; }
             .card-platform h4, .card-platform p { color: black !important; }
             .slide.section { border: 2px solid #ccc; background: white !important; }
@@ -991,17 +1052,18 @@
         </div>
     </div>
 
-    <!-- === SLIDE 16: VÍDEO MOBILE (COM OVERLAY) === -->
-    <div class="slide video-slide">
+    <!-- === SLIDE 16: VÍDEO MOBILE (COM OVERLAY - MODO RETRATO) === -->
+    <div class="slide video-mobile">
+        <div class="mobile-bg"></div>
         <div class="video-container">
             <video id="videoMobile" autoplay muted loop playsinline>
                 <source src="video-mobile.mp4" type="video/mp4">
                 Seu navegador não suporta vídeo.
             </video>
-            <div class="video-overlay">
-                <h2><i class="fa-solid fa-mobile-screen-button"></i> Versão Mobile</h2>
-                <p>Aprenda programação onde estiver</p>
-            </div>
+        </div>
+        <div class="video-overlay-mobile">
+            <h2><i class="fa-solid fa-mobile-screen-button" style="color: var(--zul-blue);"></i> Versão Mobile</h2>
+            <p>Aprenda programação onde estiver</p>
         </div>
         <div class="slide-number">
             <span class="current">16</span>
@@ -1010,8 +1072,9 @@
         </div>
     </div>
 
-    <!-- === SLIDE 17: VÍDEO MOBILE (SEM OVERLAY - APENAS VÍDEO) === -->
-    <div class="slide video-full">
+    <!-- === SLIDE 17: VÍDEO MOBILE (SEM OVERLAY - MODO RETRATO) === -->
+    <div class="slide video-mobile">
+        <div class="mobile-bg"></div>
         <div class="video-container">
             <video id="videoMobileFull" autoplay muted loop playsinline>
                 <source src="video-mobile.mp4" type="video/mp4">
