@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZulCode | Plataforma Gamificada para Ensino de Programação</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --zul-blue: #2b6bf3;
+            --zul-blue-dark: #1a4fa8;
+            --zul-blue-light: #5a8bf5;
+            --zul-glow: rgba(43, 107, 243, 0.4);
+            --color-white: #FFFFFF;
+            --color-bg: #000000;
+            --color-text: #e8ecf4;
+            --color-gray: #8892b0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* === SLIDES === */
+        .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 60px 40px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+            z-index: 0;
+            overflow-y: auto;
+        }
+        .slide.active { opacity: 1; pointer-events: auto; z-index: 1; }
+
+        /* === NÚMERO DO SLIDE (TOPO - GRANDE) === */
+        .slide-number {
+            position: absolute;
+            top: 35px;
+            right: 55px;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.08);
+            font-family: 'Nunito', sans-serif;
+            letter-spacing: 4px;
+            z-index: 10;
+            user-select: none;
+        }
+        .slide-number .current {
+            color: var(--zul-blue);
+            font-size: 2.8rem;
+            font-weight: 900;
+        }
+        .slide-number .total {
+            color: rgba(255,255,255,0.2);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .slide-number .separator {
+            color: rgba(255,255,255,0.1);
+            font-weight: 300;
+            margin: 0 6px;
+        }
+
+        /* === CAPA COM VÍDEO === */
+        .slide.cover-video {
+            background: #000000;
+            padding: 0;
+            position: relative;
+        }
+        .slide.cover-video .video-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+        }
+        .slide.cover-video .video-bg video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.35;
+        }
+        .slide.cover-video .video-bg .overlay-gradient {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.85) 100%);
+        }
+        .slide.cover-video .cover-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            padding: 60px;
+            margin-top: 60px;
+        }
+        .slide.cover-video .cover-badge {
+            display: inline-block;
+            background: rgba(43, 107, 243, 0.2);
+            border: 1px solid rgba(43, 107, 243, 0.3);
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--zul-blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            backdrop-filter: blur(4px);
+        }
+        .slide.cover-video .cover-icon {
+            font-size: 4.5rem;
+            color: var(--zul-blue);
+            margin-bottom: 15px;
+            display: block;
+            text-shadow: 0 0 40px rgba(43,107,243,0.3);
+        }
+        .slide.cover-video h1 {
+            font-size: 6.5rem;
+            font-weight: 900;
+            color: var(--color-white);
+            line-height: 1;
+            margin-bottom: 8px;
+            text-shadow: 0 0 60px rgba(0,0,0,0.5);
+        }
+        .slide.cover-video h1 span { color: var(--zul-blue); }
+        .slide.cover-video .subtitle {
+            font-size: 1.5rem;
+            color: var(--color-gray);
+            font-weight: 400;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+        .slide.cover-video .cover-line {
+            width: 60px;
+            height: 2px;
+            background: var(--zul-blue);
+            margin: 20px auto 25px;
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(43,107,243,0.3);
+        }
+        .slide.cover-video .authors {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .slide.cover-video .authors .author {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--color-gray);
+            background: rgba(0,0,0,0.5);
+            padding: 4px 14px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .slide.cover-video .authors .author i { color: var(--zul-blue); margin-right: 6px; }
+        .slide.cover-video .institution {
+            color: var(--color-gray);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            opacity: 0.8;
+            background: rgba(0,0,0,0.3);
+            padding: 6px 18px;
+            border-radius: 30px;
+            display: inline-block;
+            backdrop-filter: blur(4px);
+        }
+        .slide.cover-video .institution strong { color: var(--zul-blue); }
+
+        /* === SLIDE DE VÍDEO FINAL (ENCERRAMENTO) === */
+        .slide.video-end {
+            padding: 0;
+            background: #000;
+        }
+        .slide.video-end .video-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+        }
+        .slide.video-end .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+        }
+        .slide.video-end .video-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .slide.video-end .video-overlay .icon-final {
+            font-size: 4rem;
+            color: var(--zul-blue);
+            margin-bottom: 20px;
+            display: block;
+        }
+        .slide.video-end .video-overlay h2 {
+            font-size: 4rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        .slide.video-end .video-overlay h2 span { color: var(--zul-blue); }
+        .slide.video-end .video-overlay p {
+            font-size: 1.3rem;
+            color: var(--color-gray);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .slide.video-end .video-overlay .participants {
+            margin-top: 25px;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            background: rgba(0,0,0,0.5);
+            padding: 12px 30px;
+            border-radius: 40px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .slide.video-end .video-overlay .participants i { color: var(--zul-blue); margin-right: 10px; }
+        .slide.video-end .video-overlay .participants strong { color: var(--zul-blue); }
+        .slide.video-end .video-overlay .tags {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .slide.video-end .video-overlay .tags span {
+            background: rgba(43,107,243,0.15);
+            padding: 4px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(43,107,243,0.15);
+            font-size: 0.85rem;
+            color: var(--color-gray);
+        }
+        .slide.video-end .video-overlay .tags span i { color: var(--zul-blue); margin-right: 6px; }
+
+        /* === SLIDE DE SEÇÃO === */
+        .slide.section {
+            background: #000000;
+            text-align: center;
+            border: 1px solid rgba(43,107,243,0.1);
+            margin: 30px;
+            border-radius: 30px;
+            padding: 60px;
+        }
+        .slide.section .icon { font-size: 4rem; color: var(--zul-blue); margin-bottom: 20px; display: block; }
+        .slide.section h1 { font-size: 3.5rem; font-weight: 900; color: var(--color-white); }
+        .slide.section p { font-size: 1.3rem; color: var(--color-gray); font-weight: 600; }
+        .slide.section .presenter {
+            margin-top: 20px;
+            background: rgba(43,107,243,0.12);
+            padding: 10px 30px;
+            border-radius: 40px;
+            display: inline-block;
+            border: 1px solid rgba(43,107,243,0.2);
+        }
+        .slide.section .presenter i { color: var(--zul-blue); margin-right: 10px; }
+
+        /* === SLIDE DE CONTEÚDO === */
+        .slide.content {
+            background: #000000;
+            text-align: left;
+            padding: 80px 80px 40px;
+        }
+        .slide.content h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--color-white);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--zul-blue);
+            padding-left: 20px;
+        }
+        .slide.content h2 i { color: var(--zul-blue); margin-right: 12px; }
+        .slide.content p { font-size: 1.1rem; color: var(--color-text); line-height: 1.7; max-width: 900px; margin-bottom: 15px; }
+        .slide.content ul { list-style: none; padding: 0; max-width: 900px; }
+        .slide.content ul li {
+            padding: 10px 0 10px 35px;
+            position: relative;
+            font-size: 1.05rem;
+            color: var(--color-text);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .slide.content ul li:last-child { border-bottom: none; }
+        .slide.content ul li::before {
+            content: "\f0da";
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 8px;
+            color: var(--zul-blue);
+        }
+        .slide.content .highlight {
+            background: rgba(43,107,243,0.08);
+            border-left: 4px solid var(--zul-blue);
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 15px 0;
+            max-width: 900px;
+        }
+        .slide.content .highlight i { color: var(--zul-blue); margin-right: 8px; }
+
+        /* === SLIDE DE VÍDEO DAS PLATAFORMAS === */
+        .slide.video-slide {
+            padding: 0;
+            background: #000;
+        }
+        .slide.video-slide .video-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+        }
+        .slide.video-slide .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .slide.video-slide .video-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .slide.video-slide .video-overlay h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        .slide.video-slide .video-overlay p {
+            font-size: 1.3rem;
+            color: var(--zul-blue);
+            font-weight: 600;
+        }
+
+        /* === CARDS === */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 900px; width: 100%; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 900px; width: 100%; }
+
+        .card-platform {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .card-platform:hover {
+            transform: translateY(-8px);
+            border-color: var(--zul-blue);
+            box-shadow: 0 20px 40px rgba(43,107,243,0.08);
+        }
+        .card-platform .icon { font-size: 2.5rem; color: var(--zul-blue); margin-bottom: 15px; display: block; }
+        .card-platform h4 { font-size: 1.2rem; font-weight: 800; color: var(--color-white); }
+        .card-platform p { font-size: 0.95rem; color: var(--color-gray); }
+        .card-platform ul { text-align: left; padding: 0; list-style: none; margin-top: 15px; }
+        .card-platform ul li {
+            padding: 6px 0;
+            font-size: 0.95rem;
+            color: var(--color-gray);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .card-platform ul li:last-child { border-bottom: none; }
+        .card-platform ul li i { color: var(--zul-blue); margin-right: 8px; width: 18px; }
+
+        /* === SEM SETAS === */
+        .controls {
+            display: none;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--zul-blue), var(--zul-blue-light));
+            width: 0%;
+            transition: width 0.4s ease;
+            z-index: 101;
+        }
+
+        .dots {
+            position: fixed;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .dot.active {
+            width: 22px;
+            border-radius: 10px;
+            background: var(--zul-blue);
+        }
+
+        /* === RESPONSIVO === */
+        @media (max-width: 768px) {
+            .slide { padding: 60px 25px 40px; }
+            .slide.cover-video h1 { font-size: 3.5rem; }
+            .slide.cover-video .subtitle { font-size: 1.1rem; }
+            .slide.cover-video .cover-badge { font-size: 0.65rem; padding: 4px 14px; }
+            .slide.cover-video .cover-content { padding: 30px; margin-top: 40px; }
+            .slide.video-end .video-overlay h2 { font-size: 2.5rem; }
+            .slide.video-end .video-overlay .participants { font-size: 0.85rem; padding: 8px 16px; }
+            .slide.section h1 { font-size: 2.2rem; }
+            .slide.section { margin: 15px; padding: 40px 20px; }
+            .slide.content { padding: 60px 25px 40px; }
+            .slide.content h2 { font-size: 1.8rem; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .slide.video-slide .video-overlay h2 { font-size: 2rem; }
+            .slide-number { top: 20px; right: 25px; }
+            .slide-number .current { font-size: 2.2rem; }
+            .slide-number .total { font-size: 1.6rem; }
+            .dots { bottom: 20px; gap: 8px; }
+            .slide.cover-video .authors .author { font-size: 0.8rem; padding: 2px 10px; }
+            .slide.cover-video .institution { font-size: 0.75rem; padding: 4px 12px; }
+            .slide.video-end .video-overlay .tags span { font-size: 0.75rem; padding: 2px 12px; }
+        }
+
+        @media print {
+            .controls, .progress-bar, .dots, .slide-number { display: none; }
+            .slide { position: relative; opacity: 1; page-break-after: always; height: auto; min-height: 100vh; background: white !important; color: black !important; }
+            .slide.video-slide, .slide.video-end, .slide.cover-video { display: none; }
+            .card-platform { border: 1px solid #ccc; background: white; }
+            .card-platform h4, .card-platform p { color: black !important; }
+            .slide.section { border: 2px solid #ccc; background: white !important; }
+            .slide.section h1, .slide.section p { color: black !important; }
+            .slide.content h2, .slide.content p, .slide.content ul li { color: black !important; }
+            .slide.content .highlight { background: #f5f5f5; border-left-color: var(--zul-blue); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="dots" id="dotsContainer"></div>
+
+<div class="container" id="slidesContainer">
+
+    <!-- === SLIDE 1: CAPA COM VÍDEO === -->
+    <div class="slide cover-video active">
+        <div class="slide-number">
+            <span class="current">01</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <div class="video-bg">
+            <video id="coverVideo" autoplay muted loop playsinline>
+                <source src="capa-video.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+            <div class="overlay-gradient"></div>
+        </div>
+        <div class="cover-content">
+            <div class="cover-badge">
+                <i class="fa-solid fa-graduation-cap"></i> TCC 2026 · COTIL/UNICAMP
+            </div>
+            <i class="fa-solid fa-code cover-icon"></i>
+            <h1>Zul<span>Code</span></h1>
+            <div class="subtitle">Plataforma Gamificada para o Ensino de Programação</div>
+            <div class="cover-line"></div>
+            <div class="authors">
+                <span class="author"><i class="fa-solid fa-user"></i> Thales G.</span>
+                <span class="author"><i class="fa-solid fa-user"></i> Gabriel Z.</span>
+                <span class="author"><i class="fa-solid fa-user"></i> Vitor M.</span>
+                <span class="author"><i class="fa-solid fa-user"></i> Miguel R.</span>
+            </div>
+            <div class="institution">
+                <i class="fa-solid fa-university"></i> <strong>UNICAMP</strong> · COTIL · Desenvolvimento de Sistemas &nbsp;|&nbsp; <i class="fa-solid fa-user-tie"></i> Orientadora: <strong>Profª Priscila</strong> · Limeira — SP, 2026
+            </div>
+        </div>
+    </div>
+
+    <!-- === SLIDE 2: O QUE É O ZULCODE === -->
+    <div class="slide content">
+        <div class="slide-number">
+            <span class="current">02</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <h2><i class="fa-solid fa-lightbulb"></i> O que é o ZulCode?</h2>
+        <p>
+            O <strong style="color: var(--zul-blue);">ZulCode</strong> é uma plataforma educacional gamificada que transforma o aprendizado de programação em uma experiência <strong>interativa, divertida e motivadora</strong>.
+        </p>
+        <p>
+            Inspirado na mecânica de aprendizado consagrada por aplicativos como o <strong>Duolingo</strong>, o ZulCode oferece uma jornada estruturada onde cada usuário progride no seu próprio ritmo.
+        </p>
+        <div class="highlight">
+            <i class="fa-solid fa-quote-left"></i>
+            <em>Não é só programar — é uma aventura para dominar o código!</em>
+        </div>
+        <ul>
+            <li><strong>Trilhas de aprendizado</strong> estruturadas do básico ao avançado</li>
+            <li><strong>Desafios interativos</strong> com feedback imediato</li>
+            <li><strong>Gamificação completa</strong>: XP, vidas, ranking e metas diárias</li>
+            <li><strong>Multiplataforma</strong>: Web, Desktop e Mobile</li>
+        </ul>
+    </div>
+
+    <!-- === SLIDE 3: PROBLEMA E SOLUÇÃO === -->
+    <div class="slide content">
+        <div class="slide-number">
+            <span class="current">03</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <h2><i class="fa-solid fa-circle-exclamation"></i> O Problema</h2>
+        <p>
+            O crescimento acelerado do setor de tecnologia gerou uma demanda crescente por profissionais que dominem programação. No entanto, muitos iniciantes enfrentam dificuldades devido à falta de materiais didáticos <strong>acessíveis, dinâmicos e envolventes</strong>.
+        </p>
+        <div class="highlight" style="border-left-color: #ef4444;">
+            <i class="fa-solid fa-triangle-exclamation" style="color: #ef4444;"></i>
+            A maioria das plataformas existentes adota uma abordagem <strong>passiva</strong>, baseada em leitura ou vídeos, sem interatividade ou mecanismos que incentivem a continuidade do aprendizado.
+        </div>
+        <h2 style="margin-top: 30px;"><i class="fa-solid fa-check-circle"></i> A Solução</h2>
+        <p>
+            O <strong style="color: var(--zul-blue);">ZulCode</strong> resolve esse problema com uma abordagem <strong>ativa e gamificada</strong>, onde o aprendizado acontece na prática, com desafios, recompensas e uma comunidade engajada.
+        </p>
+    </div>
+
+    <!-- === SLIDE 4: GAMIFICAÇÃO === -->
+    <div class="slide content">
+        <div class="slide-number">
+            <span class="current">04</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <h2><i class="fa-solid fa-gamepad"></i> Mecânicas de Gamificação</h2>
+        <div class="grid-3">
+            <div class="card-platform">
+                <i class="fa-solid fa-star icon"></i>
+                <h4>Pontos de Experiência</h4>
+                <p>Acumule XP completando desafios e avançando nas trilhas de aprendizado.</p>
+            </div>
+            <div class="card-platform">
+                <i class="fa-solid fa-heart icon"></i>
+                <h4>Sistema de Vidas</h4>
+                <p>Erros custam vidas, incentivando revisão e aprendizado consciente.</p>
+            </div>
+            <div class="card-platform">
+                <i class="fa-solid fa-trophy icon"></i>
+                <h4>Ranking e Competição</h4>
+                <p>Compare seu progresso com outros usuários e suba no ranking global.</p>
+            </div>
+            <div class="card-platform">
+                <i class="fa-solid fa-calendar-day icon"></i>
+                <h4>Metas Diárias</h4>
+                <p>Desafios diários para manter a consistência e criar o hábito de estudar.</p>
+            </div>
+            <div class="card-platform">
+                <i class="fa-solid fa-road icon"></i>
+                <h4>Trilhas Estruturadas</h4>
+                <p>Do básico ao avançado, com progressão clara e objetivos definidos.</p>
+            </div>
+            <div class="card-platform">
+                <i class="fa-solid fa-award icon"></i>
+                <h4>Conquistas</h4>
+                <p>Desbloqueie medalhas e conquistas ao atingir marcos importantes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- === SLIDE 5: ASSINATURAS === -->
+    <div class="slide content">
+        <div class="slide-number">
+            <span class="current">05</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <h2><i class="fa-solid fa-crown"></i> Planos de Assinatura</h2>
+        <div class="grid-2">
+            <div class="card-platform" style="border-color: rgba(43,107,243,0.15);">
+                <i class="fa-solid fa-user icon" style="color: var(--color-gray);"></i>
+                <h4>Plano Gratuito</h4>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Acesso às trilhas básicas</li>
+                    <li><i class="fa-solid fa-check"></i> Desafios limitados</li>
+                    <li><i class="fa-solid fa-check"></i> Ranking básico</li>
+                    <li><i class="fa-solid fa-xmark" style="color: #ef4444;"></i> Metas diárias</li>
+                </ul>
+            </div>
+            <div class="card-platform" style="border-color: var(--zul-blue); background: rgba(43,107,243,0.06);">
+                <i class="fa-solid fa-crown icon" style="color: var(--zul-blue);"></i>
+                <h4>Plano Premium</h4>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Acesso a TODAS as trilhas</li>
+                    <li><i class="fa-solid fa-check"></i> Desafios ilimitados</li>
+                    <li><i class="fa-solid fa-check"></i> Ranking competitivo</li>
+                    <li><i class="fa-solid fa-check"></i> Metas diárias e conquistas</li>
+                    <li><i class="fa-solid fa-check"></i> Suporte prioritário</li>
+                </ul>
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 20px; color: var(--color-gray);">
+            <i class="fa-solid fa-credit-card" style="color: var(--zul-blue);"></i> Assinatura mensal ou anual — cancele quando quiser
+        </p>
+    </div>
+
+    <!-- === SLIDE 6: TECNOLOGIAS === -->
+    <div class="slide content">
+        <div class="slide-number">
+            <span class="current">06</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <h2><i class="fa-solid fa-cubes"></i> Stack Tecnológica</h2>
+        <p>O ZulCode foi desenvolvido com uma arquitetura moderna e multiplataforma:</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; max-width: 900px;">
+            <span style="background: rgba(43,107,243,0.12); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(43,107,243,0.15);">
+                <i class="fa-brands fa-react" style="color: var(--zul-blue);"></i> Next.js
+            </span>
+            <span style="background: rgba(43,107,243,0.12); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(43,107,243,0.15);">
+                <i class="fa-brands fa-node-js" style="color: var(--zul-blue);"></i> NestJS
+            </span>
+            <span style="background: rgba(43,107,243,0.12); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(43,107,243,0.15);">
+                <i class="fa-solid fa-mobile-screen-button" style="color: var(--zul-blue);"></i> Capacitor
+            </span>
+            <span style="background: rgba(43,107,243,0.12); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(43,107,243,0.15);">
+                <i class="fa-solid fa-desktop" style="color: var(--zul-blue);"></i> Electron
+            </span>
+            <span style="background: rgba(43,107,243,0.12); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(43,107,243,0.15);">
+                <i class="fa-solid fa-database" style="color: var(--zul-blue);"></i> PostgreSQL
+            </span>
+            <span style="background: rgba(43,107,243,0.12); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(43,107,243,0.15);">
+                <i class="fa-solid fa-code-branch" style="color: var(--zul-blue);"></i> Kanban / Git
+            </span>
+        </div>
+        <div class="highlight">
+            <i class="fa-solid fa-check-circle"></i> Arquitetura RESTful ·
+            <i class="fa-solid fa-check-circle"></i> Autenticação JWT ·
+            <i class="fa-solid fa-check-circle"></i> ORM TypeORM ·
+            <i class="fa-solid fa-check-circle"></i> Deploy na Nuvem
+        </div>
+    </div>
+
+    <!-- === SLIDE 7: SEÇÃO WEB === -->
+    <div class="slide section">
+        <div class="slide-number">
+            <span class="current">07</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <i class="fa-solid fa-globe icon"></i>
+        <h1>Versão Web</h1>
+        <p>Plataforma acessível de qualquer navegador</p>
+        <div class="presenter">
+            <i class="fa-solid fa-user"></i> Apresenta: <strong>Gabriel Zanelatto</strong>
+        </div>
+    </div>
+
+    <!-- === SLIDE 8: VÍDEO WEB === -->
+    <div class="slide video-slide">
+        <div class="video-container">
+            <video id="videoWeb" autoplay muted loop playsinline>
+                <source src="video-web.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+            <div class="video-overlay">
+                <h2><i class="fa-solid fa-globe"></i> Versão Web</h2>
+                <p>Acesse de qualquer lugar, a qualquer hora</p>
+            </div>
+        </div>
+        <div class="slide-number">
+            <span class="current">08</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+    </div>
+
+    <!-- === SLIDE 9: COMENTÁRIO WEB === -->
+    <div class="slide content">
+        <div class="slide-number">
+            <span class="current">09</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <h2><i class="fa-solid fa-comment"></i> Comentário — Versão Web</h2>
+        <p>
+            A <strong style="color: var(--zul-blue);">versão web do ZulCode</strong> foi desenvolvida com <strong>Next.js</strong>, garantindo performance e experiência de usuário impecáveis. Com ela, os usuários podem acessar a plataforma de qualquer navegador, sem necessidade de instalação.
+        </p>
+        <div class="highlight">
+            <i class="fa-solid fa-check-circle"></i>
+            <strong>Responsividade:</strong> Funciona perfeitamente em computadores, tablets e celulares.
+        </div>
+        <div class="highlight">
+            <i class="fa-solid fa-check-circle"></i>
+            <strong>Integração em tempo real:</strong> Sincroniza com o backend para manter progresso atualizado.
+        </div>
+        <ul>
+            <li>Interface intuitiva e gamificada</li>
+            <li>PWA (Progressive Web App) para instalação rápida</li>
+            <li>SEO otimizado para melhor alcance</li>
+        </ul>
+    </div>
+
+    <!-- === SLIDE 10: SEÇÃO DESKTOP === -->
+    <div class="slide section">
+        <div class="slide-number">
+            <span class="current">10</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <i class="fa-solid fa-desktop icon"></i>
+        <h1>Versão Desktop</h1>
+        <p>Aplicação nativa para Windows, macOS e Linux</p>
+        <div class="presenter">
+            <i class="fa-solid fa-user"></i> Apresenta: <strong>Miguel Rochia</strong>
+        </div>
+    </div>
+
+    <!-- === SLIDE 11: VÍDEO DESKTOP === -->
+    <div class="slide video-slide">
+        <div class="video-container">
+            <video id="videoDesktop" autoplay muted loop playsinline>
+                <source src="video-desktop.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+            <div class="video-overlay">
+                <h2><i class="fa-solid fa-desktop"></i> Versão Desktop</h2>
+                <p>Experiência nativa no seu computador</p>
+            </div>
+        </div>
+        <div class="slide-number">
+            <span class="current">11</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+    </div>
+
+    <!-- === SLIDE 12: COMENTÁRIO DESKTOP === -->
+    <div class="slide content">
+        <div class="slide-number">
+            <span class="current">12</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <h2><i class="fa-solid fa-comment"></i> Comentário — Versão Desktop</h2>
+        <p>
+            A <strong style="color: var(--zul-blue);">versão desktop do ZulCode</strong> utiliza <strong>Electron</strong> para oferecer uma experiência nativa em Windows, macOS e Linux. Ideal para quem prefere estudar com foco total, sem distrações do navegador.
+        </p>
+        <div class="highlight">
+            <i class="fa-solid fa-check-circle"></i>
+            <strong>Performance máxima:</strong> Roda diretamente no sistema operacional.
+        </div>
+        <div class="highlight">
+            <i class="fa-solid fa-check-circle"></i>
+            <strong>Notificações nativas:</strong> Alertas e lembretes integrados ao sistema.
+        </div>
+        <ul>
+            <li>Atalhos de teclado personalizados</li>
+            <li>Modo offline para estudar sem internet</li>
+            <li>Instalação simples via instalador</li>
+        </ul>
+    </div>
+
+    <!-- === SLIDE 13: SEÇÃO MOBILE === -->
+    <div class="slide section">
+        <div class="slide-number">
+            <span class="current">13</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <i class="fa-solid fa-mobile-screen-button icon"></i>
+        <h1>Versão Mobile</h1>
+        <p>Aplicação nativa para Android e iOS</p>
+        <div class="presenter">
+            <i class="fa-solid fa-user"></i> Apresenta: <strong>Miguel Rochia</strong>
+        </div>
+    </div>
+
+    <!-- === SLIDE 14: VÍDEO MOBILE === -->
+    <div class="slide video-slide">
+        <div class="video-container">
+            <video id="videoMobile" autoplay muted loop playsinline>
+                <source src="video-mobile.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+            <div class="video-overlay">
+                <h2><i class="fa-solid fa-mobile-screen-button"></i> Versão Mobile</h2>
+                <p>Aprenda programação onde estiver</p>
+            </div>
+        </div>
+        <div class="slide-number">
+            <span class="current">14</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+    </div>
+
+    <!-- === SLIDE 15: COMENTÁRIO MOBILE === -->
+    <div class="slide content">
+        <div class="slide-number">
+            <span class="current">15</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+        <h2><i class="fa-solid fa-comment"></i> Comentário — Versão Mobile</h2>
+        <p>
+            A <strong style="color: var(--zul-blue);">versão mobile do ZulCode</strong> utiliza <strong>Capacitor</strong> para gerar aplicativos nativos para <strong>Android e iOS</strong>. Aprender programação nunca foi tão portátil!
+        </p>
+        <div class="highlight">
+            <i class="fa-solid fa-check-circle"></i>
+            <strong>Experiência nativa:</strong> Interface adaptada para telas pequenas.
+        </div>
+        <div class="highlight">
+            <i class="fa-solid fa-check-circle"></i>
+            <strong>Notificações push:</strong> Lembretes diários para manter a consistência.
+        </div>
+        <ul>
+            <li>Desafios rápidos para momentos livres</li>
+            <li>Sincronização automática com a nuvem</li>
+            <li>Disponível nas lojas oficiais (Google Play e App Store)</li>
+        </ul>
+        <div style="margin-top: 25px; padding: 15px 20px; background: rgba(43,107,243,0.06); border-radius: 12px; border: 1px solid rgba(43,107,243,0.1); max-width: 900px; text-align: center;">
+            <i class="fa-solid fa-check-circle" style="color: var(--zul-blue);"></i>
+            <strong>Resumo das Plataformas:</strong> Web (<strong>Gabriel Zanelatto</strong>) · Desktop (<strong>Miguel Rochia</strong>) · Mobile (<strong>Miguel Rochia</strong>)
+        </div>
+    </div>
+
+    <!-- === SLIDE 16: VÍDEO FINAL (ENCERRAMENTO) === -->
+    <div class="slide video-end">
+        <div class="video-container">
+            <video id="endVideo" autoplay muted loop playsinline>
+                <source src="fim-video.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+            <div class="video-overlay">
+                <i class="fa-solid fa-flag-checkered icon-final"></i>
+                <h2>Zul<span>Code</span></h2>
+                <p>Plataforma Gamificada para o Ensino de Programação</p>
+                <div class="participants">
+                    <i class="fa-solid fa-users"></i> 
+                    Thales G. · Gabriel Z. · Vitor M. · Miguel R. · Orientadora: Profª Priscila
+                </div>
+                <div class="tags">
+                    <span><i class="fa-solid fa-graduation-cap"></i> TCC 2026</span>
+                    <span><i class="fa-solid fa-university"></i> COTIL/UNICAMP</span>
+                    <span><i class="fa-solid fa-code"></i> ZulCode</span>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">
+            <span class="current">16</span>
+            <span class="separator">/</span>
+            <span class="total">16</span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const progressBar = document.getElementById('progressBar');
+    const dotsContainer = document.getElementById('dotsContainer');
+    const currentNum = document.querySelectorAll('.current');
+    const totalNum = document.querySelectorAll('.total');
+
+    // Atualizar totais
+    totalNum.forEach(el => el.textContent = String(totalSlides).padStart(2, '0'));
+
+    // Criar dots
+    for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        dot.setAttribute('data-index', i);
+        dot.addEventListener('click', () => showSlide(i));
+        dotsContainer.appendChild(dot);
+    }
+    const dots = document.querySelectorAll('.dot');
+
+    // Vídeos
+    const coverVideo = document.getElementById('coverVideo');
+    const videoWeb = document.getElementById('videoWeb');
+    const videoDesktop = document.getElementById('videoDesktop');
+    const videoMobile = document.getElementById('videoMobile');
+    const endVideo = document.getElementById('endVideo');
+
+    function showSlide(index) {
+        if (index < 0) index = 0;
+        if (index >= totalSlides) index = totalSlides - 1;
+        currentSlide = index;
+        slides.forEach((slide, i) => {
+            slide.classList.remove('active');
+            if (i === currentSlide) slide.classList.add('active');
+        });
+        dots.forEach((dot, i) => {
+            dot.classList.remove('active');
+            if (i === currentSlide) dot.classList.add('active');
+        });
+        const progress = ((currentSlide + 1) / totalSlides) * 100;
+        progressBar.style.width = `${progress}%`;
+        currentNum.forEach(el => el.textContent = String(currentSlide + 1).padStart(2, '0'));
+
+        // Controlar vídeos
+        if (coverVideo) {
+            if (currentSlide === 0) coverVideo.play().catch(() => {});
+            else coverVideo.pause();
+        }
+        if (videoWeb) {
+            if (currentSlide === 7) videoWeb.play().catch(() => {});
+            else videoWeb.pause();
+        }
+        if (videoDesktop) {
+            if (currentSlide === 10) videoDesktop.play().catch(() => {});
+            else videoDesktop.pause();
+        }
+        if (videoMobile) {
+            if (currentSlide === 13) videoMobile.play().catch(() => {});
+            else videoMobile.pause();
+        }
+        if (endVideo) {
+            if (currentSlide === 15) endVideo.play().catch(() => {});
+            else endVideo.pause();
+        }
+    }
+
+    // Navegação por teclado
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            showSlide(currentSlide + 1);
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            showSlide(currentSlide - 1);
+        }
+    });
+
+    showSlide(0);
+</script>
+
+</body>
+</html>
