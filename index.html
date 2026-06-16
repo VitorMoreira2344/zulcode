@@ -330,7 +330,7 @@
         }
         .slide.video-mobile .video-overlay-mobile {
             position: absolute;
-            bottom: 40px;
+            top: 40px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 2;
@@ -444,6 +444,76 @@
             border: 1px solid rgba(43,107,243,0.2);
         }
         .slide.section .presenter i { color: var(--zul-blue); margin-right: 10px; }
+
+        /* === SLIDE COM IMAGEM LATERAL === */
+        .slide.content-with-image {
+            background: #000000;
+            text-align: left;
+            padding: 80px 80px 40px;
+            flex-direction: row;
+            gap: 50px;
+            align-items: center;
+        }
+        .slide.content-with-image .text-content { flex: 1; min-width: 0; }
+        .slide.content-with-image .text-content h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--color-white);
+            margin-bottom: 16px;
+            border-left: 4px solid var(--zul-blue);
+            padding-left: 20px;
+        }
+        .slide.content-with-image .text-content h2 i { color: var(--zul-blue); margin-right: 12px; }
+        .slide.content-with-image .text-content p {
+            font-size: 1rem;
+            color: var(--color-text);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        .slide.content-with-image .text-content .highlight {
+            background: rgba(43,107,243,0.08);
+            border-left: 4px solid var(--zul-blue);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-size: 0.95rem;
+        }
+        .slide.content-with-image .text-content .highlight i { color: var(--zul-blue); margin-right: 8px; }
+        .slide.content-with-image .image-content {
+            flex: 0 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide.content-with-image .image-content img {
+            max-height: 70vh;
+            max-width: 280px;
+            width: auto;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(43,107,243,0.1);
+            border: 1px solid rgba(43,107,243,0.2);
+            object-fit: contain;
+        }
+
+        /* === SLIDE 2 - LAYOUT COM IMAGEM LATERAL === */
+        .phone-layout {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            max-width: 1100px;
+            width: 100%;
+        }
+        .phone-text { flex: 1; min-width: 0; }
+        .phone-layout > img {
+            flex: 0 0 auto;
+            max-height: clamp(280px, 60vh, 480px);
+            width: auto;
+            max-width: 260px;
+            border-radius: 16px;
+            border: 1px solid rgba(43,107,243,0.2);
+            box-shadow: 0 0 50px rgba(43,107,243,0.1);
+            object-fit: contain;
+        }
 
         /* === SLIDE DE CONTEÚDO === */
         .slide.content {
@@ -645,8 +715,12 @@
             .slide.video-end .video-overlay .footer-end { font-size: 0.75rem; }
             .slide.section h1 { font-size: 2.2rem; }
             .slide.section { margin: 15px; padding: 40px 20px; }
-            .slide.content { padding: 60px 25px 40px; }
-            .slide.content h2 { font-size: 1.8rem; }
+            .slide.content, .slide.content-with-image { padding: 60px 25px 40px; }
+            .slide.content-with-image { flex-direction: column; gap: 20px; }
+            .slide.content-with-image .image-content img { max-width: 200px; max-height: 40vh; }
+            .phone-layout { flex-direction: column; gap: 25px; }
+            .phone-layout > img { max-width: 180px; max-height: 35vh; }
+            .slide.content h2, .slide.content-with-image .text-content h2 { font-size: 1.8rem; }
             .grid-2, .grid-3 { grid-template-columns: 1fr; }
             .slide.video-slide .video-overlay h2 { font-size: 2rem; }
             .slide.video-mobile .video-container video { height: 80vh; max-width: 95vw; }
@@ -725,7 +799,6 @@
         </div>
     </div>
 
-    <!-- === SLIDE 2: O QUE É O ZULCODE === -->
     <!-- === SLIDE 2: O QUE É O ZULCODE (COM IMAGEM MOBILE) === -->
     <div class="slide content">
         <div class="slide-number">
@@ -733,49 +806,27 @@
             <span class="separator">/</span>
             <span class="total">19</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 50px; max-width: 1100px; width: 100%; flex-wrap: wrap; justify-content: center;">
-            <div style="flex: 1; min-width: 280px;">
-                <h2 style="border-left: 4px solid var(--zul-blue); padding-left: 20px; border-bottom: none; font-size: 2.2rem;">
-                    <i class="fa-solid fa-lightbulb" style="color: var(--zul-blue);"></i> O que é o ZulCode?
-                </h2>
-                <p style="font-size: 1.1rem; color: var(--color-text); line-height: 1.7;">
+        <div class="phone-layout">
+            <div class="phone-text">
+                <h2><i class="fa-solid fa-lightbulb"></i> O que é o ZulCode?</h2>
+                <p>
                     O <strong style="color: var(--zul-blue);">ZulCode</strong> é uma plataforma educacional gamificada que transforma o aprendizado de programação em uma experiência <strong>interativa, divertida e motivadora</strong>.
                 </p>
-                <p style="font-size: 1.1rem; color: var(--color-text); line-height: 1.7;">
+                <p>
                     Inspirado na mecânica de aprendizado consagrada por aplicativos como o <strong>Duolingo</strong>, o ZulCode oferece uma jornada estruturada onde cada usuário progride no seu próprio ritmo.
                 </p>
-                <div class="highlight" style="margin: 15px 0;">
-                    <i class="fa-solid fa-quote-left" style="color: var(--zul-blue);"></i>
+                <div class="highlight">
+                    <i class="fa-solid fa-quote-left"></i>
                     <em>Não é só programar — é uma aventura para dominar o código!</em>
                 </div>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="padding: 8px 0 8px 35px; position: relative; font-size: 1rem; color: var(--color-text); border-bottom: 1px solid rgba(255,255,255,0.04);">
-                        <span style="position: absolute; left: 8px; color: var(--zul-blue); font-weight: 900;">▸</span>
-                        <strong>Trilhas de aprendizado</strong> estruturadas do básico ao avançado
-                    </li>
-                    <li style="padding: 8px 0 8px 35px; position: relative; font-size: 1rem; color: var(--color-text); border-bottom: 1px solid rgba(255,255,255,0.04);">
-                        <span style="position: absolute; left: 8px; color: var(--zul-blue); font-weight: 900;">▸</span>
-                        <strong>Desafios interativos</strong> com feedback imediato
-                    </li>
-                    <li style="padding: 8px 0 8px 35px; position: relative; font-size: 1rem; color: var(--color-text); border-bottom: 1px solid rgba(255,255,255,0.04);">
-                        <span style="position: absolute; left: 8px; color: var(--zul-blue); font-weight: 900;">▸</span>
-                        <strong>Gamificação completa</strong>: XP, vidas, ranking e metas diárias
-                    </li>
-                    <li style="padding: 8px 0 8px 35px; position: relative; font-size: 1rem; color: var(--color-text);">
-                        <span style="position: absolute; left: 8px; color: var(--zul-blue); font-weight: 900;">▸</span>
-                        <strong>Multiplataforma</strong>: Web, Desktop e Mobile
-                    </li>
+                <ul>
+                    <li><strong>Trilhas de aprendizado</strong> estruturadas do básico ao avançado</li>
+                    <li><strong>Desafios interativos</strong> com feedback imediato</li>
+                    <li><strong>Gamificação completa</strong>: XP, vidas, ranking e metas diárias</li>
+                    <li><strong>Multiplataforma</strong>: Web, Desktop e Mobile</li>
                 </ul>
             </div>
-            <div style="flex: 0 0 auto; display: flex; justify-content: center; align-items: center;">
-                <div style="position: relative; width: 280px; height: 560px; background: #0a0a0a; border-radius: 40px; border: 3px solid rgba(43,107,243,0.3); box-shadow: 0 0 60px rgba(43,107,243,0.1); display: flex; justify-content: center; align-items: center; overflow: hidden;">
-                    <!-- Moldura do celular -->
-                    <div style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 60px; height: 6px; background: rgba(255,255,255,0.15); border-radius: 10px; z-index: 5;"></div>
-                    <img src="mobile-zulcode.png" alt="ZulCode App Mobile" style="width: 100%; height: 100%; object-fit: cover; border-radius: 38px;" onerror="this.src='https://placehold.co/280x560/0A7C6E/FFFFFF?text=ZulCode+App'">
-                    <!-- Botão home -->
-                    <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); width: 40px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; z-index: 5;"></div>
-                </div>
-            </div>
+            <img src="mobile-zulcode.png" alt="ZulCode App Mobile" onerror="this.src='https://placehold.co/280x560/0A7C6E/FFFFFF?text=ZulCode+App'">
         </div>
     </div>
 
@@ -785,6 +836,9 @@
             <span class="current">03</span>
             <span class="separator">/</span>
             <span class="total">19</span>
+        </div>
+        <div class="image-content">
+            <img src="favorites.png" alt="Problema e Solução ZulCode" onerror="this.src='https://placehold.co/400x700/0A7C6E/FFFFFF?text=Problema+x+Solu%C3%A7%C3%A3o'">
         </div>
         <div class="text-content">
             <h2><i class="fa-solid fa-circle-exclamation"></i> O Problema</h2>
@@ -799,9 +853,6 @@
             <p>
                 O <strong style="color: var(--zul-blue);">ZulCode</strong> resolve esse problema com uma abordagem <strong>ativa e gamificada</strong>, onde o aprendizado acontece na prática, com desafios, recompensas e uma comunidade engajada.
             </p>
-        </div>
-        <div class="image-content">
-            <img src="favorites.png" alt="Problema e Solução ZulCode" onerror="this.src='https://placehold.co/400x700/0A7C6E/FFFFFF?text=Problema+x+Solu%C3%A7%C3%A3o'">
         </div>
     </div>
 
